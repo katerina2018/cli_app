@@ -25,9 +25,13 @@ async function getContactById(contactId) {
 
 async function removeContact(contactId) {
   const db = await getDb();
+  const contact = db.find(item => item.id === contactId);
+  if (!contact) {
+    return null;
+  }
   const contacts = db.filter(item => item.id !== contactId);
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
-  return contacts;
+  return contact;
 }
 
 async function addContact(name, email, phone) {
